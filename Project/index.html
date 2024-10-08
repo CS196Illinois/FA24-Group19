@@ -1,9 +1,45 @@
 <html>
     <head>
-        <title>Linkedin web scraper, CS196 project</title>
+        <title>Linkedin web scraper, CS196 project</title> <!-- title -->
+        <!--java script-->
+        <script>
+            //array of job list. naturally would need more jobs and use better key words.
+            let jobs = [
+                "Software Engineer", "Data Scientist", "Researcher", "Web Developer", 
+                "UI/UX Designer", "Teacher", "Full Stack Developer", "Mobile Developer", "Cybersecurity"
+            ];
+
+            // function to make drop down box have jobs to choose from (i.e populate scroller)
+            function dropDownBox() {
+                const selectElement = document.getElementById('job-select');
+
+                // loop through the jobs array
+                jobs.forEach(function(job) {
+                    let option = document.createElement('option');
+
+                    // when a value is referrenced in future it will be like software-engineer
+                    option.value = job.toLowerCase().replace(/\s+/g, '-');
+                    
+                    option.text = job;  // Set the display text
+                    selectElement.appendChild(option);  // Add the option to the dropdown
+                });
+            }
+
+            // Populate the dropdown after the page loads
+            window.onload = dropDownBox;
+        </script>
     </head>
     <body>
-        <h1>Welcome to the Linkedin web scraper</h1>
-        <h3>Please select your desired job</h3>
+        <h1>Welcome to the Linkedin web scraper</h1> <!-- beginning message -->
+        <h3>Please select your desired job</h3> <!-- prompt to ask options -->
+
+        <!-- dropdown for selecting a job -->
+        <label for="job-select">Choose a job:</label>
+
+        <!--implement a feature for when job is selected--> 
+        <select id="job-select" name="jobs">
+
+        </select> 
+
     </body>
 </html>
