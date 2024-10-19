@@ -15,8 +15,10 @@ def get_csv_data():
     df = pd.read_csv(r'FA24-Group19\Project\output.csv')  # parse csv with pandas
     df = df.head(500)  # get the first 500 rows
     
-    # Convert to a list of lists (array-like structure)
-    data = df.values.tolist()
+    # Convert the DataFrame to a list of dictionaries (JSON-serializable)
+    data = df.to_dict(orient='records')
+    
+    # Return the data as JSON
 
     return jsonify(data)  # Send the array to the frontend
 
