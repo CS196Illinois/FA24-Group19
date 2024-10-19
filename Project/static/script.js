@@ -1,41 +1,77 @@
-//array of job list. naturally would need more jobs and use better key words.
+console.log("Script loaded");
+
+// Array of job list
 let jobs = [
     "Software Engineer", "Data Scientist", "Researcher", "Web Developer", 
     "UI/UX Designer", "Teacher", "Full Stack Developer", "Mobile Developer", "Cybersecurity"
 ];
 
-// function to make drop down box have jobs to choose from (i.e populate scroller)
+// Function to populate the dropdown box with jobs
 function populateJobDropdownBox() {
     const selectElement = document.getElementById('job-select');
 
-    // loop through the jobs array
     jobs.forEach(function(job) {
-        let option = document.createElement('option'); // option cuz it looks like an option
-
-        // when a value is referrenced in future it will be like software-engineer
+        let option = document.createElement('option');
         option.value = job.toLowerCase().replace(/\s+/g, '-');
+        option.text = job;
+        selectElement.appendChild(option);
+    });
+}
 
-        option.text = job;  // Set the display text
-        selectElement.appendChild(option);  // Add the option to the dropdown
+// Function to create or update the pie chart
+function createPieChart(data) {
+    const ctx = document.getElementById('jobChart').getContext('2d');
+    
+    // If a previous chart exists, destroy it
+    if (window.myPieChart) {
+        window.myPieChart.destroy();
+    }
+
+    // Create a new pie chart
+    window.myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Category 1', 'Category 2', 'Category 3'],  // Dummy categories
+            datasets: [{
+                label: 'Job Data',
+                data: data,  // Pass the data to the chart
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true
+        }
     });
 }
 
 // Function to handle when user selects a job
 function handleJobSelection(event) {
-    const selectedJob = event.target.value;  // get the value of the selected job
-    console.log("Selected job:", selectedJob);  // we check if this works if the console prints the selected job
+    const selectedJob = event.target.value;  // Get the selected job value
+    console.log("Selected job:", selectedJob);
     
-    //todo get data from this selected job and show statistics based on it
+    // Dummy data for the chart based on selected job
+    let chartData;
+    if (selectedJob === 'software-engineer') {
+        chartData = [10, 20, 30];  // Example data for Software Engineer
+    } else if (selectedJob === 'data-scientist') {
+        chartData = [15, 25, 35];  // Example data for Data Scientist
+    } else if (selectedJob === 'researcher') {
+        chartData = [5, 10, 15];  // Example data for Researcher
+    } else {
+        chartData = [12, 19, 24];  // Default dummy data
+    }
 
+    // Create or update the pie chart with the selected data
+    createPieChart(chartData);
 }
 
-// populate dropdown when page loads
+// Populate the dropdown when the page loads
 window.onload = function() {
     populateJobDropdownBox();
 
-    // get the html element job select
+    // Get the dropdown element and add event listener
     const selectElement = document.getElementById('job-select');
-    selectElement.addEventListener('change', handleJobSelection);  // when user clicks, a change is recorded and 
-                                                                   // handleJobSelection function is called
+    selectElement.addEventListener('change', handleJobSelection);
 
 };
