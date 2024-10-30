@@ -1,16 +1,36 @@
 import pandas as pd
 
 # CSV file path
-csv_file_path = r'FA24-Group19\Project\output.csv'
+csv_file_path = r'FA24-Group19\Project\final_data.csv'
 
 # Read the CSV file
 df = pd.read_csv(csv_file_path)
 
 # Convert the first 2 rows of the DataFrame to a list (array-like structure)
-data_array = df.head(50).values.tolist()
+data_array = df.values.tolist()
+
+#list of skills
+skill_columns = df.columns[10:]  
+
+# Dictionary to map each job to its skills
+job_skills_dict = {}
+
+
+# gonna match jobs in array to their skills.
+for each in data_array:
+    #job title
+    job_title = each[2]
+    #reset skills
+    skills = []
+
+    for iterator in range(10, 41):
+        #if skills (like python == 1) is positive
+        if each[iterator] == 1:
+            skills.append(df.columns[iterator])
+
+    #map job title to list of skills in the dictionary
+    job_skills_dict[job_title] = skills
+    
 
 # Print the resulting array
-print(data_array)
-
-#"Software Engineer", "Data Scientist", "Researcher", "Web Developer", 
-#   "UI/UX Designer", "Teacher", "Full Stack Developer", "Mobile Developer", "Cybersecurity"
+print(job_skills_dict)
