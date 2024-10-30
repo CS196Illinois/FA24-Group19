@@ -1,74 +1,39 @@
+<!DOCTYPE html>
 <html lang="en"> 
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Linkedin web scraper, CS196 project</title> <!-- title -->
-        <style> 
-            body {
-            font-family: Arial, sans-serif;
-            margin-top: 50px;
-            margin-left: 300px;
-            margin-right: 300px;
-            background-color: beige;
-        }
-        h3 {
-           border: 2px solid #7b7a7a;
-           font-size: 20px;
-           color: #6c757d;
-           margin-left: 150px;
-           margin-right: 140px;
-           margin-top: 40px;
-           background-color: rgba(255, 255, 255, 0.8); 
-        }
-
-        h1{
-            color: grey;
-            text-align: center;
-        }
-        
-        label{
-            padding: 6px;
-            margin-top: 40px;
-            margin-left: 165px;
-            color: #6c757d;
-            font-weight: bold;
-            font-size:16px;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        select{
-            padding: 6px; 
-            border: 1px solid #6c757d; 
-            border-radius: 5px; 
-            background-color: rgba(255, 255, 255, 0.8);
-            font-size: 15px; 
-            color: #333; 
-        }
-
-        .statistics {
-            margin: 40px 160px 0 150px; 
-            border: 1px solid #6c757d;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        </style>
-        <!--java script-->
+        <title>LinkedIn Web Scraper - CS196 Project</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <!-- JavaScript files -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
-        <h1>Welcome to the Linkedin web scraper!!!</h1> <!-- beginning message -->
+        <h1>Welcome to the LinkedIn Web Scraper!!</h1>
         <hr>
-        <h3>Please select your desired job</h3> <!-- prompt to ask options -->
+        <h3>Please select your desired job</h3>
 
-        <!-- dropdown for selecting a job -->
-        <label for="job-select">Choose a job:</label> <!-- label for options-->
-
-        <!--implement a visual features for when job is selected (todo) --> 
-        <select id="job-select" name="jobTitle">
-
-        </select> 
+        <!-- Dropdown for selecting a job -->
+        <label for="job-select">Choose a job:</label>
+        <select id="job-select" name="jobTitle"></select>
 
         <!-- Canvas for the pie chart -->
-        <canvas id="jobChart" width="400" height="400"></canvas>
+        <div class="statistics">
+            <canvas id="jobChart" width="400" height="400"></canvas>
+        </div>
+
+        <!-- New Search Section -->
+        <div class="search-section">
+            <h3>Search for a Job</h3>
+            <input type="text" id="job-search" placeholder="Enter job title" />
+            <button id="search-button">Search</button>
+
+            <!-- Display skills for the searched job -->
+            <h3>Skills Required:</h3>
+            <ul id="skills-container">
+                <!-- Skills for the searched job will be listed here -->
+            </ul>
+        </div>
     </body>
 </html>

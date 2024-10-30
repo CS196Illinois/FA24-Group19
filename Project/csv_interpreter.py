@@ -30,7 +30,3 @@ for each in data_array:
 
     #map job title to list of skills in the dictionary
     job_skills_dict[job_title] = skills
-    
-
-# Print the resulting array
-print(job_skills_dict)
