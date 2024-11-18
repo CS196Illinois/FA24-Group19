@@ -10,7 +10,7 @@
         <script src="{{ url_for('static', filename='script.js') }}"></script>
     </head>
     <body>
-        <h1>Welcome to the LinkedIn Web Scraper!!</h1>
+        <h1>Welcome to the LinkedIn Web Scraper!!!</h1>
         <hr>
         <h3>Please select your desired job</h3>
 
@@ -26,9 +26,12 @@
         <!-- New Search Section -->
         <div class="search-section">
             <h3>Search for a Job</h3>
-            <input type="text" id="job-search" placeholder="Enter job title" />
-            <button id="search-button">Search</button>
+            <input type="text" id="job-search" placeholder="Enter job title" oninput="jobSearchSuggestions()" />
 
+            <!-- suggestions go here -->
+            <div class="job-search-suggestions"></div>
+            
+            <button id="search-button">Search</button>
             <!-- Display skills for the searched job -->
             <h3>Skills Required:</h3>
             <ul id="skills-container">

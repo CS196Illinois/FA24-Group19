@@ -38,6 +38,51 @@ function handleJobSearch() {
     }
 }
 
+// Function to provide job search suggestions
+function jobSearchSuggestions() {
+    const searchInput = document.getElementById('job-search').value.trim().toLowerCase();
+    const suggestionsContainer = document.querySelector('.job-search-suggestions');
+
+    // Clear previous suggestions
+    suggestionsContainer.innerHTML = '';
+
+    // If search input is empty, do nothing
+    if (searchInput === '') return;
+
+    // Get all job titles from jobSkills dictionary
+    const jobTitles = Object.keys(jobSkills);
+
+    // Find exact matches
+    let filteredJobs = jobTitles.filter(job => job.toLowerCase() === searchInput);
+
+    // If no exact matches, find partial matches
+    if (filteredJobs.length === 0) {
+        filteredJobs = jobTitles.filter(job => job.toLowerCase().includes(searchInput));
+    }
+
+    // Display the filtered job suggestions
+    if (filteredJobs.length > 0) {
+        filteredJobs.forEach(job => {
+            const jobTitle = document.createElement('p');
+            jobTitle.textContent = job;
+
+            // Add a click event to fill the search input when a suggestion is clicked
+            jobTitle.addEventListener('click', () => {
+                document.getElementById('job-search').value = job;
+                handleJobSearch();
+                suggestionsContainer.innerHTML = ''; // Clear suggestions after selection
+            });
+
+            suggestionsContainer.appendChild(jobTitle);
+        });
+    } else {
+        // If no suggestions found, show message
+        const noResult = document.createElement('p');
+        noResult.textContent = 'No matching jobs found.';
+        suggestionsContainer.appendChild(noResult);
+    }
+}    
+
 // Array of job list
 let jobs = [
     "Software Engineer", "Data Scientist", "Researcher", "Web Developer", 
@@ -109,6 +154,10 @@ window.onload = function() {
     fetchJobSkills();  // Fetch job skills function called
     populateJobDropdownBox();
 
+    // Event listener for the search input field for suggestions
+    const searchInput = document.getElementById('job-search');
+    searchInput.addEventListener('input', jobSearchSuggestions);
+    
     // Get the dropdown element and add event listener
     const selectElement = document.getElementById('job-select');
     selectElement.addEventListener('change', handleJobSelection);
