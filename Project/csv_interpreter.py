@@ -1,7 +1,7 @@
 import pandas as pd
 
 # CSV file path
-csv_file_path = r'FA24-Group19\Project\final_data.csv'
+csv_file_path = r'Project\final_data.csv'
 
 # Read the CSV file
 df = pd.read_csv(csv_file_path)
