@@ -15,7 +15,7 @@ from sklearn.linear_model import LinearRegression
 
 # Step 2: Load the dataset
 # Ensure to replace with your actual dataset file path
-data = pd.read_csv('postings.csv', encoding='utf-8')
+data = pd.read_csv('Project\postings.csv', encoding='utf-8')
 
 # Display the first few rows of the dataset
 print(data.head())
@@ -126,3 +126,4 @@ new_data = pd.DataFrame({
 # Predict the salary for the new job posting
 predicted_salary = pipeline.predict(new_data)
 print(f"Predicted Salary for the new job posting: ${predicted_salary[0]:,.2f}")
+print("Done")
