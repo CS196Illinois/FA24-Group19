@@ -24,18 +24,6 @@ df['formatted_work_type'] = df['formatted_work_type'].str.strip().str.title()
 # Clean 'formatted_experience_type' column
 df['formatted_experience_level'] = df['formatted_experience_level'].str.strip().str.title()
 
-# Find all unique values in the 'formatted_work_type' column
-unique_work_types = df['formatted_work_type'].unique()
-
-# Display the unique work types
-print("Possible Work Types:", unique_work_types)
-
-# Find all unique values in the 'formatted_work_type' column
-unique_experience_level = df['formatted_experience_level'].unique()
-
-# Display the unique work types
-print("Possible Experience Levels:", unique_experience_level)
-
 # Set up the app title
 st.title('Job Posting Insights')
 
@@ -101,14 +89,43 @@ st.subheader(f"Found {filtered_df.shape[0]} job postings")
 # Show a preview of the filtered jobs
 st.write(filtered_df[['title', 'company_name', 'location', 'min_salary', 'max_salary', 'formatted_work_type', 'formatted_experience_level']].head(10))
 
+# Initialize session state for navigation
+if 'start_index' not in st.session_state:
+    st.session_state['start_index'] = 0
+
+# Define the number of jobs to display per page
+jobs_per_page = 10
+
+# Get the current page of jobs
+start_idx = st.session_state['start_index']
+end_idx = start_idx + jobs_per_page
+current_page_df = filtered_df.iloc[start_idx:end_idx]
+
+# Display current page of jobs
+st.subheader(f"Displaying jobs {start_idx + 1} to {min(end_idx, filtered_df.shape[0])} of {filtered_df.shape[0]}")
+st.write(current_page_df[['title', 'company_name', 'location', 'min_salary', 'max_salary', 'formatted_work_type', 'formatted_experience_level']])
+
+# Navigation buttons under the job postings
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col1:
+    if st.button("Previous"):
+        if st.session_state['start_index'] > 0:
+            st.session_state['start_index'] -= jobs_per_page
+
+with col2:
+    st.write("")  # Empty space for better alignment
+
+with col3:
+    if st.button("Next"):
+        if st.session_state['start_index'] + jobs_per_page < filtered_df.shape[0]:
+            st.session_state['start_index'] += jobs_per_page
+
 job_id_counter = 0
 # Display detailed information about the selected job posting
 # Check if filtered_df has rows before creating number_input
-if filtered_df.shape[0] > 0:
-    # Display filtered results
-    st.subheader(f"Found {filtered_df.shape[0]} job postings")
-    st.write(filtered_df[['title', 'company_name', 'location', 'min_salary', 'max_salary', 'formatted_work_type', 'formatted_experience_level']].head(10))
-
+if not current_page_df.empty:
+    
     # Display detailed information about the selected job posting
     st.subheader("Job Posting Details")
     job_id = st.number_input(
