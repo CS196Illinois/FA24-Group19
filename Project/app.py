@@ -1,11 +1,13 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 import streamlit as st
 
 # Load the dataset
 # Reader can download postings.csv from https://www.kaggle.com/datasets/arshkon/linkedin-job-postings?select=postings.csv
-df = pd.read_csv(r'Project\postings.csv')
+df = pd.read_csv('postings.csv')
 
 # Clean the dataset: Remove unnecessary columns, handle missing values, etc.
 df['original_listed_time'] = pd.to_datetime(df['original_listed_time'], unit='ms')
@@ -152,9 +154,18 @@ else:
     # Display a message if no jobs match the filters
     st.write("No jobs found matching the selected filters.")
 
-# Job Titles Distribution
-st.subheader('Top Job Titles Distribution')
-top_job_titles = filtered_df['title'].value_counts().head(10)
+# Save job details functionality
+st.subheader('Save Your Favorite Jobs')
+if st.checkbox('Enable Saving Jobs'):
+    job_id_to_save = st.text_input('Enter Job ID to Save', '')
+    if job_id_to_save and job_id_to_save.isdigit() and int(job_id_to_save) in filtered_df['job_id'].values:
+        saved_job = filtered_df[filtered_df['job_id'] == int(job_id_to_save)]
+        st.write('Saved Job Details:')
+        st.write(saved_job[['title', 'company_name', 'location', 'min_salary', 'max_salary']])
+    else:
+        st.warning('Invalid Job ID or Job Not Found.')
+
+
 # Job Titles Distribution
 st.subheader('Top Job Titles Distribution')
 top_job_titles = filtered_df['title'].value_counts().head(10)
@@ -173,6 +184,7 @@ fig = px.bar(
 )
 st.plotly_chart(fig)
 
+
 # Average Salary by Location
 st.subheader('Average Salary by Location')
 avg_salary_by_location = filtered_df.groupby('location')[['max_salary', 'min_salary']].mean()
@@ -181,6 +193,36 @@ fig = px.bar(avg_salary_by_location, x=avg_salary_by_location.index, y='max_sala
              title='Average Maximum Salary by Location')
 st.plotly_chart(fig)
 
+# Salary range analysis with a box plot
+st.subheader('Salary Range Analysis')
+salary_chart = px.box(filtered_df, 
+                      x='formatted_work_type', 
+                      y='max_salary', 
+                      color='formatted_experience_level',
+                      labels={'formatted_work_type': 'Work Type', 'max_salary': 'Max Salary'},
+                      title='Salary Range by Work Type and Experience Level')
+
+# Display the chart
+st.plotly_chart(salary_chart)
+
+# Word Cloud for skills
+st.subheader('Top Skills in Demand')
+
+# Ensure all skills are strings and handle missing values
+skills_text = ' '.join(filtered_df['skills_desc'].dropna().astype(str))
+
+if skills_text.strip():  # Check if there is any content to display
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(skills_text)
+
+    # Display Word Cloud
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    st.pyplot(plt)
+else:
+    st.write("No skills data available for generating the word cloud.")
+
+
 # Job Postings Over Time
 st.subheader('Job Postings Over Time')
 df['listed_month'] = df['original_listed_time'].dt.to_period('M')
@@ -188,4 +230,3 @@ job_postings_per_month = df.groupby('listed_month').size()
 fig = px.line(job_postings_per_month, x=job_postings_per_month.index.astype(str), y=job_postings_per_month.values,
               labels={'x': 'Month', 'y': 'Number of Postings'}, title='Job Postings Trends Over Time')
 st.plotly_chart(fig)
-
