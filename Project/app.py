@@ -5,6 +5,106 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import streamlit as st
 
+st.markdown(
+    """
+    <style>
+
+        h1 {
+            color: #2e8b57;  
+            text-align: center;  
+            font-size: 36px;
+        }
+
+    
+        .stButton>button {
+            background-color: #2e8b57;  
+            color: white;
+            font-size: 14px;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .stButton>button:hover {
+            background-color: #3cb371;  
+        }
+
+        
+        .stSidebar {
+            background-color: #ffffff;  
+            border-right: 1px solid #ddd;  
+            padding: 20px;
+        }
+
+        
+        .stSidebar header {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2e8b57;  
+        }
+
+      
+        .stTextInput input, .stSelectbox select, .stSlider>div>div>div {
+            font-size: 14px;
+            border: 2px solid #2e8b57;  
+            border-radius: 4px;
+        }
+
+        .stTextInput input:focus, .stSelectbox select:focus {
+            border-color: #3cb371;  
+        }
+
+       
+        .main-content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+        }
+
+        
+        .job-postings-header {
+            border: 2px solid #2e8b57;  
+            background-color: #eaf7e5;  
+            color: #2e8b57;  
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stWrite {
+            color: #333333;  
+        }
+
+    
+        .section-title {
+            position: relative;
+            font-size: 28px;
+            font-weight: bold;
+            color: #34495e;
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+
+        .section-title-line {
+            position: relative;
+            width: 60%;
+            height: 2px;
+            background-color: #3498db; 
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    """, unsafe_allow_html=True
+)
+
 # Load the dataset
 # Reader can download postings.csv from https://www.kaggle.com/datasets/arshkon/linkedin-job-postings?select=postings.csv
 df = pd.read_csv('postings.csv')
